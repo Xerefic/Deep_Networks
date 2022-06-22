@@ -4,9 +4,13 @@ import torch
 import itertools
 from typing import Union, List, Dict, Any, Optional, cast
 
-import args
-import data
-import dnn, dgn, dlgn, dlgnsf
+from args import *
+from data import *
+from dnn import *
+from dgn import *
+from dlgn import *
+from dlgnsf import *
+from trainer import *
 
 
 def set_seed(seed):

@@ -3,8 +3,8 @@ import sklearn
 import torch
 from torchvision import transforms
 
-import args
-import utils
+from args import *
+from utils import *
 
 def get_data(size, range):
     def labelize(x):

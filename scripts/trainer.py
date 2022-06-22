@@ -11,10 +11,13 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-import args
-import utils
-import data
-import dnn, dgn, dlgn, dlgnsf
+from args import *
+from utils import *
+from data import *
+from dnn import *
+from dgn import *
+from dlgn import *
+from dlgnsf import *
 
 class Trainer():
     def __init__(self, args, architecture):

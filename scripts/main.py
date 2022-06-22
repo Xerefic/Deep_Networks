@@ -36,11 +36,14 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchsummary import summary
 
-import args
-import utils
-import data
-import dnn, dgn, dlgn, dlgnsf
-import trainer
+from args import *
+from utils import *
+from data import *
+from dnn import *
+from dgn import *
+from dlgn import *
+from dlgnsf import *
+from trainer import *
 
 
 models = ['DNN', 'DGN', 'DLGN', 'DLGNSF']
