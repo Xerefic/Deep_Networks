@@ -5,6 +5,8 @@ import itertools
 from typing import Union, List, Dict, Any, Optional, cast
 
 import args
+import data
+import dnn, dgn, dlgn, dlgnsf
 
 
 def set_seed(seed):
