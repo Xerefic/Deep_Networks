@@ -53,7 +53,7 @@ class CreateDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, index):
         data = self.entry.iloc[index]
-        file_name = os.path.join(self.args.root_dir, self.mode, str(data['id'])+'.png')
+        file_name = os.path.join(self.args.root_dir, self.mode, str(data['id']))
         image = Image.open(file_name)
         image = self.transform(image)
         label = data['label']
