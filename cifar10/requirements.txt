@@ -1,0 +1,11 @@
+opencv-python
+Pillow
+matplotlib
+
+scikit-learn
+numpy
+scipy
+pandas
+
+pyprind
+gdown
