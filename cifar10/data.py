@@ -11,22 +11,24 @@ def get_data(args):
     # encoder = process()
 
     data = pd.read_csv(os.path.join(args.root_dir, 'train_file.csv'))
-    files = data['Image']
-    labels = data['Label']
-    train_data_files = files
-    train_data_labels = labels
+    train_data_files = data['Image']
+    train_data_labels = data['Label']
     # train_data_files, valid_data_files, train_data_label, valid_data_label = train_test_split(files, labels, test_size=0.05, shuffle=True, stratify=labels)
+
+    data = pd.read_csv(os.path.join(args.root_dir, 'valid_file.csv'))
+    valid_data_files = data['Image']
+    valid_data_labels = data['Label']
     
     data = pd.read_csv(os.path.join(args.root_dir, 'test_file.csv'))
     test_data_files = data['Image']
     test_data_labels = data['Label']
 
     train_data = pd.DataFrame({'id': train_data_files, 'label': train_data_labels})
-    valid_data = pd.DataFrame({'id': test_data_files, 'label': test_data_labels})
+    valid_data = pd.DataFrame({'id': valid_data_files, 'label': valid_data_labels})
     test_data = pd.DataFrame({'id': test_data_files, 'label': test_data_labels})
 
-    unique, counts = np.unique(labels, return_counts=True)
-    weights = torch.Tensor(sklearn.utils.class_weight.compute_class_weight(class_weight="balanced", classes=unique, y=np.asarray(labels)))
+    unique, counts = np.unique(train_data_labels, return_counts=True)
+    weights = torch.Tensor(sklearn.utils.class_weight.compute_class_weight(class_weight="balanced", classes=unique, y=np.asarray(train_data_labels)))
 
     return (train_data, valid_data, test_data), weights
 
@@ -40,7 +42,6 @@ class CreateDataset(torch.utils.data.Dataset):
             self.entry = self.args.train_file
         elif mode=='valid':
             self.entry = self.args.valid_file
-            self.mode = 'train'
         elif mode=='test':
             self.entry = self.args.test_file    
 
@@ -79,3 +80,13 @@ if __name__ == "__main__":
     print(len(train_dataset))
     print(len(valid_dataset))
     print(len(test_dataset))
+
+    trainloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+    for i, data in enumerate(trainloader):
+        continue
+    validloader = DataLoader(valid_dataset, batch_size=32, shuffle=False)
+    for i, data in enumerate(validloader):
+        continue
+    testloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
+    for i, data in enumerate(testloader):
+        continue
