@@ -12,14 +12,14 @@ def get_data(args):
 
     data = pd.read_csv(os.path.join(args.root_dir, 'train_file.csv'))
     files = data['Image']
-    labels = data['Label'] # encoder.transform(data['label'])
+    labels = data['Label']
     train_data_files = files
     train_data_labels = labels
     # train_data_files, valid_data_files, train_data_label, valid_data_label = train_test_split(files, labels, test_size=0.05, shuffle=True, stratify=labels)
     
     data = pd.read_csv(os.path.join(args.root_dir, 'test_file.csv'))
     test_data_files = data['Image']
-    test_data_labels = data['Label'] # encoder.transform(data['label'])
+    test_data_labels = data['Label']
 
     train_data = pd.DataFrame({'id': train_data_files, 'label': train_data_labels})
     valid_data = pd.DataFrame({'id': test_data_files, 'label': test_data_labels})
