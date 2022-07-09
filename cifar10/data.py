@@ -1,92 +1,41 @@
 from imports import *
 from args import *
 
-# def process():
-#     data = pd.read_csv(os.path.join(args.root_dir, 'train_labels.csv'))
-#     encoder = preprocessing.LabelEncoder()
-#     encoder.fit(data['Label'])
-#     return encoder
-
 def get_data(args):
-    # encoder = process()
 
-    data = pd.read_csv(os.path.join(args.root_dir, 'train_file.csv'))
-    train_data_files = data['Image']
-    train_data_labels = data['Label']
-    # train_data_files, valid_data_files, train_data_label, valid_data_label = train_test_split(files, labels, test_size=0.05, shuffle=True, stratify=labels)
-
-    data = pd.read_csv(os.path.join(args.root_dir, 'valid_file.csv'))
-    valid_data_files = data['Image']
-    valid_data_labels = data['Label']
-    
-    data = pd.read_csv(os.path.join(args.root_dir, 'test_file.csv'))
-    test_data_files = data['Image']
-    test_data_labels = data['Label']
-
-    train_data = pd.DataFrame({'id': train_data_files, 'label': train_data_labels})
-    valid_data = pd.DataFrame({'id': valid_data_files, 'label': valid_data_labels})
-    test_data = pd.DataFrame({'id': test_data_files, 'label': test_data_labels})
-
-    unique, counts = np.unique(train_data_labels, return_counts=True)
-    weights = torch.Tensor(sklearn.utils.class_weight.compute_class_weight(class_weight="balanced", classes=unique, y=np.asarray(train_data_labels)))
-
-    return (train_data, valid_data, test_data), weights
-
-
-class CreateDataset(torch.utils.data.Dataset):
-    def __init__(self, args, mode='train'):
-        self.args = args
-        self.mode = mode
-
-        if mode=='train':
-            self.entry = self.args.train_file
-        elif mode=='valid':
-            self.entry = self.args.valid_file
-        elif mode=='test':
-            self.entry = self.args.test_file    
-
-        self.transform = torchvision.transforms.Compose(
+    transform = torchvision.transforms.Compose(
             [
-                transforms.ToTensor(),
-                transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
+                torchvision.transforms.ToTensor(),
+                torchvision.transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
             ]
         )
 
-    def __getitem__(self, index):
-        data = self.entry.iloc[index]
-        file_name = os.path.join(self.args.root_dir, self.mode, str(data['id']))
-        image = Image.open(file_name)
-        image = self.transform(image)
-        label = data['label']
-        return image, label
+    train_dataset = torchvision.datasets.CIFAR10(root=args.root_dir, train=True, download=True, transform=transform)
+    valid_dataset = torchvision.datasets.CIFAR10(root=args.root_dir, train=False, download=True, transform=transform)
+    test_dataset = torchvision.datasets.CIFAR10(root=args.root_dir, train=False, download=True, transform=transform)
 
-    def __len__(self):
-        return len(self.entry)
+    unique, counts = np.unique(train_dataset.targets, return_counts=True)
+    weights = torch.Tensor(sklearn.utils.class_weight.compute_class_weight(class_weight="balanced", classes=unique, y=np.asarray(train_dataset.targets)))
+
+    return (train_dataset, valid_dataset, test_dataset), weights
 
 if __name__ == "__main__":
     args = TrainingArgs()
     data, weights = get_data(args)
 
-    args.train_file = data[0]
-    args.valid_file = data[1]
-    args.test_file = data[2]
+    args.data = data
 
-    train_dataset = CreateDataset(args, mode='train')
-    valid_dataset = CreateDataset(args, mode='valid')
-    test_dataset = CreateDataset(args, mode='test')
+    print(weights)
+    print(len(data[0]))
+    print(len(data[1]))
+    print(len(data[2]))
 
-    args.data = (train_dataset, valid_dataset, test_dataset)
-
-    print(len(train_dataset))
-    print(len(valid_dataset))
-    print(len(test_dataset))
-
-    trainloader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    for i, data in enumerate(trainloader):
-        continue
-    validloader = DataLoader(valid_dataset, batch_size=32, shuffle=False)
-    for i, data in enumerate(validloader):
-        continue
-    testloader = DataLoader(test_dataset, batch_size=32, shuffle=False)
-    for i, data in enumerate(testloader):
-        continue
+    # trainloader = DataLoader(data[0], batch_size=32, shuffle=True)
+    # for i, data in enumerate(trainloader):
+    #     continue
+    # validloader = DataLoader(data[1], batch_size=32, shuffle=False)
+    # for i, data in enumerate(validloader):
+    #     continue
+    # testloader = DataLoader(data[2], batch_size=32, shuffle=False)
+    # for i, data in enumerate(testloader):
+    #     continue

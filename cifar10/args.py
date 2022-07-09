@@ -46,9 +46,6 @@ class TrainingArgs():
     gating: tuple = get_gates(['AND', 'AND', 'AND', 'AND', 'AND'], 0.8, image_size, channels)
     exposure: tuple = tuple(torch.where(torch.rand(len(channels), 2**k)>0.5, torch.ones(1,), torch.zeros(1,)).tolist())
 
-    train_file: tuple = None
-    valid_file: tuple = None
-    test_file: tuple = None
     data: tuple = None
 
     root_dir: str = './data/cifar-10'

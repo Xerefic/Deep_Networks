@@ -9,15 +9,8 @@ if __name__ == "__main__":
     args = TrainingArgs()
     data, weights = get_data(args)
 
-    args.train_file = data[0]
-    args.valid_file = data[1]
-    args.test_file = data[2]
-
-    train_dataset = CreateDataset(args, mode='train')
-    valid_dataset = CreateDataset(args, mode='valid')
-    test_dataset = CreateDataset(args, mode='test')
-
-    args.data = (train_dataset, valid_dataset, test_dataset)
+    args.data = data
+    args.weights = weights
 
     experiment = {}
     if os.path.exists(os.path.join(args.checkpoint, 'experiments.pkl')):

@@ -30,23 +30,23 @@ class DGN(torch.nn.Module):
     def forward(self, x):
         
         k_preact = [conv0f(x) for i, conv0f in enumerate(self.conv0f)]
-        preact = gate(k_preact, self.args.exposure[0], args.gating[0])
+        preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[0], args.gating[0])
         out = self.conv0v(x) * preact
 
         k_preact = [conv1f(self.relu(k_preact[i])) for i, conv1f in enumerate(self.conv1f)]
-        preact = gate(k_preact, self.args.exposure[1], args.gating[1])
+        preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[1], args.gating[1])
         out = self.conv1v(out) * preact
 
         k_preact = [conv2f(self.relu(k_preact[i])) for i, conv2f in enumerate(self.conv2f)]
-        preact = gate(k_preact, self.args.exposure[2], args.gating[2])
+        preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[2], args.gating[2])
         out = self.conv2v(out) * preact
 
         k_preact = [conv3f(self.relu(k_preact[i])) for i, conv3f in enumerate(self.conv3f)]
-        preact = gate(k_preact, self.args.exposure[3], args.gating[3])
+        preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[3], args.gating[3])
         out = self.conv3v(out) * preact
 
         k_preact = [conv4f(self.relu(k_preact[i])) for i, conv4f in enumerate(self.conv4f)]
-        preact = gate(k_preact, self.args.exposure[4], args.gating[4])
+        preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[4], args.gating[4])
         out = self.conv4v(out) * preact
 
         out = self.gap(out).squeeze(-1).squeeze(-1)
