@@ -5,6 +5,7 @@
 To download the dataset and set up the environment
 ```bash
 bash setup.sh
+export PYTHONPATH="$PYTHONPATH:`pwd`/models"    
 ```
 
 To start the training
