@@ -32,7 +32,7 @@ class DLGNSF(torch.nn.Module):
         k_preact = [conv0f(x) for i, conv0f in enumerate(self.conv0f)]
         preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[0], args.gating[0])
         out = self.conv0v(x) * preact
-s
+
         k_preact = [conv1f(x) for i, conv1f in enumerate(self.conv1f)]
         preact = gate([torch.softmax(t, dim=1) for t in k_preact], self.args.exposure[1], args.gating[1])
         out = self.conv1v(out) * preact

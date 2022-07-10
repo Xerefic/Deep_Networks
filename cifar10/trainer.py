@@ -4,24 +4,24 @@ from data import *
 from networks import *
 
 class Trainer():
-    def __init__(self, args, architecture):
+    def __init__(self, args):
 
         self.args = args
+        self.start_epoch = self.load()
 
         self.traindata, self.validdata, self.testdata = self.args.data
         self.trainloader, self.validloader, self.testloader = self.get_iterator(self.args.data)
         
-        self.model = self.get_model(architecture)
+        self.model = self.get_model()
         self.criterion = self.get_criterion()
         self.optimizer = self.get_optimizer()
         self.scheduler = self.get_scheduler()
 
-        self.train_loss = []
-        self.train_metrics = {'accuracy': []}
-        self.valid_loss = []
-        self.valid_metrics = {'accuracy': []}
-
-        self.start_epoch = 0
+        if self.start_epoch == 0:
+            self.train_loss = []
+            self.train_metrics = {'accuracy': []}
+            self.valid_loss = []
+            self.valid_metrics = {'accuracy': []}
 
     def get_iterator(self, data):
         train, valid, test = data
@@ -39,8 +39,8 @@ class Trainer():
     def get_scheduler(self):
         return torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, self.args.max_epochs, eta_min=1e-12, last_epoch=-1, verbose=False)
 
-    def get_model(self, architecture):
-        model = architecture.to(self.args.device)
+    def get_model(self):
+        model = get_model(args)
         return model
 
     def get_model_params(self):
@@ -176,12 +176,7 @@ class Trainer():
 
             time.sleep(1)
             print(f'Epoch {epoch}/{self.args.max_epochs} | Training: Loss = {round(epoch_train_loss, 4)}  Accuracy = {round(epoch_train_accuracy, 4)} | Validation: Loss = {round(epoch_valid_loss, 4)}  Accuracy = {round(epoch_valid_accuracy, 4)}')
-
-def get_trainer(args, model='DNN', mode='Same'):
-    architecture = get_models(args, mode)[model]
-    trainer = Trainer(args, architecture)
-    return trainer
-
+            
 if __name__ == "__main__":
     args = TrainingArgs()
     data, weights = get_data(args)
@@ -189,4 +184,4 @@ if __name__ == "__main__":
     args.data = data
     args.weights = weights
 
-    trainer = get_trainer(args, model='DNN', mode='Same')
+    trainer = Trainer(args)

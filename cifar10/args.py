@@ -24,6 +24,9 @@ def get_gates(gates, coefficient, image_size, channels):
         gating.append((gate, get_mixing(image_size, channels[i])))
     return tuple(gating)
 
+def get_exposure(channel_size, k):
+    return tuple(torch.where(torch.rand(channel_size, 2**k)>0.5, torch.ones(1,), torch.zeros(1,)).tolist())
+
 @dataclass
 class TrainingArgs():
 
@@ -32,7 +35,7 @@ class TrainingArgs():
     batch_size: int = 32
     num_workers: int = os.cpu_count()
     max_epochs: str = 200
-    device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device: torch.device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
     size: int = int(1e4)
     bound: int = 10
@@ -44,7 +47,9 @@ class TrainingArgs():
     beta: int = 1
     weights: torch.Tensor = None
     gating: tuple = get_gates(['AND', 'AND', 'AND', 'AND', 'AND'], 0.8, image_size, channels)
-    exposure: tuple = tuple(torch.where(torch.rand(len(channels), 2**k)>0.5, torch.ones(1,), torch.zeros(1,)).tolist())
+    architecture: str = 'DNN'
+    mode: str = 'Random'
+    exposure: tuple = get_exposure(len(channels), k)
 
     data: tuple = None
 
