@@ -17,11 +17,11 @@ if __name__ == "__main__":
         with open(os.path.join(args.checkpoint, 'experiments.pkl'), 'rb') as handle:
             experiment = pkl.load(handle)
 
-    architectures = ['DNN', 'DGN', 'DLGN', 'DLGNSF'] # 
-    seeds = [420, 999, 785, 2565, 3821, 856, 9999, 1001, 565, 7890] #
-    modes = ['Random', 'Same'] # 
-    ks = range(1, 5+1, 1) #
-    logics = ['ALL', 'AND', 'OR']
+    architectures = ['DLGN'] # 'DNN', 'DGN', 'DLGN', 'DLGNSF'
+    seeds = [420, 999, 785, 2565, 3821] # 420, 999, 785, 2565, 3821, 856, 9999, 1001, 565, 7890
+    modes = ['Random'] # 'Random', 'Same'
+    ks = [3] # range(1, 5+1, 1)
+    logics = ['ALL'] # 'MIX', 'ALL', 'AND', 'OR'
 
 
     for logic in logics:

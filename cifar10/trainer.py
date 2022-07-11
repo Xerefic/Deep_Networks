@@ -7,7 +7,7 @@ class Trainer():
     def __init__(self, args):
 
         self.args = args
-        self.start_epoch = self.load()
+        self.start_epoch = self.load(metrics=True)
 
         self.traindata, self.validdata, self.testdata = self.args.data
         self.trainloader, self.validloader, self.testloader = self.get_iterator(self.args.data)
@@ -58,11 +58,12 @@ class Trainer():
             'metrics': (self.train_metrics, self.valid_metrics)
             }, os.path.join(self.args.checkpoint, f"metrics_{args.experiment}.pth"))
         
-    def load(self):
-        if os.path.exists(os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth")):
-            checkpoints = torch.load(os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth"), map_location=self.args.device)
-            self.model.load_state_dict(checkpoints['model_state_dict'])
-            self.optimizer.load_state_dict(checkpoints['optimizer_state_dict'])
+    def load(self, metrics=False):
+        if not metrics:
+            if os.path.exists(os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth")):
+                checkpoints = torch.load(os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth"), map_location=self.args.device)
+                self.model.load_state_dict(checkpoints['model_state_dict'])
+                self.optimizer.load_state_dict( checkpoints['optimizer_state_dict'])
 
         if os.path.exists(os.path.join(self.args.checkpoint, f"metrics_{args.experiment}.pth")):
             checkpoints = torch.load(os.path.join(self.args.checkpoint, f"metrics_{args.experiment}.pth"), map_location=self.args.device)
