@@ -40,7 +40,7 @@ class Trainer():
         return torch.optim.lr_scheduler.CosineAnnealingLR(self.optimizer, self.args.max_epochs, eta_min=1e-12, last_epoch=-1, verbose=False)
 
     def get_model(self):
-        model = get_model(args)
+        model = get_model(self.args)
         return model
 
     def get_model_params(self):
