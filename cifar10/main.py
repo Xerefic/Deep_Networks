@@ -21,16 +21,17 @@ if __name__ == "__main__":
     seeds = [420, 999, 785, 2565, 3821] # 420, 999, 785, 2565, 3821, 856, 9999, 1001, 565, 7890
     modes = ['Random'] # 'Random', 'Same'
     ks = [3] # range(1, 5+1, 1)
-    logics = ['ALL'] # 'MIX', 'ALL', 'AND', 'OR'
-
+    logics = [['AND', 'AND', 'AND', 'AND', 'AND']] # 'MIX', 'ALL', 'AND', 'OR'
+    mixing = (0.5, 0.5, 0.5, 0.5, 0.5)
 
     for logic in logics:
         for mode in modes:
             for seed in seeds:
                 for architecture in architectures:
                     for k in ks:
-                        exp = f'k{k}{architecture}_{mode}_{logic}'
-                        name = f'k{k}{architecture}_{mode}_{logic}_{seed}'
+                        logic_ = '_'.join(logic)
+                        exp = f'k{k}{architecture}_{mode}_{logic_}'
+                        name = f'k{k}{architecture}_{mode}_{logic_}_{seed}'
 
                     
                         args.seed = seed
@@ -38,7 +39,9 @@ if __name__ == "__main__":
                         args.experiment = name
                         args.architecture = architecture
                         args.mode = mode
-                        args.gating = get_gates([logic for _ in range(len(args.channels))], 0.8, args.image_size, args.channels)
+                        args.gate = logic
+                        args.mixing = mixing
+                        args.gating = get_gates(args.gate, args.mixing, args.image_size, args.channels)
                         args.exposure = get_exposure(len(args.channels), k)
 
                         trainer = Trainer(args)

@@ -1,8 +1,8 @@
 from imports import *
 
-def get_gates(gates, coefficient, image_size, channels):
-    def get_mixing(image_size, channel_size):
-        def get_layer(image_size):
+def get_gates(gates, coefficients, image_size, channels):
+    def get_mixing(coefficient, image_size, channel_size):
+        def get_layer(coefficient, image_size):
             total = image_size**2
             pure = int(coefficient*total)
             random = total - pure
@@ -10,10 +10,10 @@ def get_gates(gates, coefficient, image_size, channels):
             idx = torch.randperm(t.nelement())
             t = t.view(-1)[idx].view(1, image_size, image_size)
             return t
-        return torch.cat([get_layer(image_size) for _ in range(channel_size)], dim=0)
+        return torch.cat([get_layer(coefficient, image_size) for _ in range(channel_size)], dim=0)
     gating = []
-    for i, gate in enumerate(gates):
-        gating.append((gate, get_mixing(image_size, channels[i])))
+    for i in range(len(gates)):
+        gating.append((gates[i], get_mixing(coefficients[i], image_size, channels[i])))
     return tuple(gating)
 
 def get_exposure(channel_size, k):
@@ -38,7 +38,9 @@ class TrainingArgs():
     k: int = 1
     beta: int = 1
     weights: torch.Tensor = None
-    gating: tuple = get_gates(['AND', 'AND', 'AND', 'AND', 'AND'], 0.8, image_size, channels)
+    mixing: float = (0.5, 0.5, 0.5, 0.5, 0.5)
+    gates: tuple = ('AND', 'AND', 'AND', 'AND', 'AND')
+    gating: tuple = get_gates(gates, mixing, image_size, channels)
     architecture: str = 'DNN'
     mode: str = 'Random'
     exposure: tuple = get_exposure(len(channels), k)
