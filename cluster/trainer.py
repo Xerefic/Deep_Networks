@@ -50,13 +50,13 @@ class Trainer():
         torch.save({
             'model_state_dict': self.model.state_dict(),
             'optimizer_state_dict': self.optimizer.state_dict(),
-            }, os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth"))
+            }, os.path.join(self.args.checkpoint, f"model_{self.args.experiment}.pth"))
         torch.save({
             'epoch': epoch,
             'args': args,
             'loss': (self.train_loss, self.valid_loss),
             'metrics': (self.train_metrics, self.valid_metrics)
-            }, os.path.join(self.args.checkpoint, f"metrics_{args.experiment}.pth"))
+            }, os.path.join(self.args.checkpoint, f"metrics_{self.args.experiment}.pth"))
         
     def load(self, metrics=False):
         if not metrics:
