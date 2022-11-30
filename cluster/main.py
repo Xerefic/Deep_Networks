@@ -56,5 +56,5 @@ if __name__ == "__main__":
                         else:
                             experiment[exp] = [accuracy]
 
-                        with open('experiments.pkl', 'wb') as handle:
+                        with open(os.path.join(args.checkpoint, 'experiments.pkl'), 'wb') as handle:
                             pkl.dump(experiment, handle, protocol=pkl.HIGHEST_PROTOCOL)

@@ -60,13 +60,13 @@ class Trainer():
         
     def load(self, metrics=False):
         if not metrics:
-            if os.path.exists(os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth")):
-                checkpoints = torch.load(os.path.join(self.args.checkpoint, f"model_{args.experiment}.pth"), map_location=self.args.device)
+            if os.path.exists(os.path.join(self.args.checkpoint, f"model_{self.args.experiment}.pth")):
+                checkpoints = torch.load(os.path.join(self.args.checkpoint, f"model_{self.args.experiment}.pth"), map_location=self.args.device)
                 self.model.load_state_dict(checkpoints['model_state_dict'])
                 self.optimizer.load_state_dict( checkpoints['optimizer_state_dict'])
 
-        if os.path.exists(os.path.join(self.args.checkpoint, f"metrics_{args.experiment}.pth")):
-            checkpoints = torch.load(os.path.join(self.args.checkpoint, f"metrics_{args.experiment}.pth"), map_location=self.args.device)
+        if os.path.exists(os.path.join(self.args.checkpoint, f"metrics_{self.args.experiment}.pth")):
+            checkpoints = torch.load(os.path.join(self.args.checkpoint, f"metrics_{self.args.experiment}.pth"), map_location=self.args.device)
             self.args = checkpoints['args']
             self.train_loss, self.valid_loss = checkpoints['loss']
             self.train_metrics, self.valid_metrics = checkpoints['metrics']
