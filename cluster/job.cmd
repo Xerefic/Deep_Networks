@@ -19,10 +19,12 @@ echo `conda env list`
 source ~/anaconda3/etc/profile.d/conda.sh
 conda activate research-work-DAG-DNN
 echo `which python`
-echo `conda list`
+@REM echo `conda list`
 echo `locate cuda | grep /cuda$`
 
+export PYTHONPATH="$PYTHONPATH:`pwd`/models"   
 python3 -u test.py > 'checkpoints/test.txt'
+python3 -u main.py > 'checkpoints/main.txt'
 
 mv * $PBS_O_WORKDIR/.
 rmdir $tempdir
