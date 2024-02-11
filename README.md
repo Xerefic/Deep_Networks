@@ -1,19 +1,25 @@
 # Deep_Networks
 
-Experiments 
+## Experiments 
 
 1. Understanding the roles of Activations in Deep Neural Networks 
-Tested the performance DNN vs DGN vs DLGN vs DLGNSF to characterize the role of activations in deep neural networks.
 
-2. Over-parameterisation on the implicit acceleration of training 
+The hypothesis was to identify number of active subnetworks in DNNs, DLGNs, DLGNSFs and thier coorelation with the performance of the network. We tried to restrict the number of active subnetworks by imposing constraints on how the path functions are activated (fixed logic, random logic, random logic, etc.). We conducted studies on both MLP and CNN based networks. 
 
-3. Initialization
+2. Over-parameterisation on the implicit acceleration of training
+
+The idea was to understand the dynamics of paths - contribution of a particular path to the final output and number of paths that change directions during training. 
+
+3.  Effect of Initialization on acceleration
+
+The hypothesis is to understand how initialization affects alignment of layers.
 
 4. Committees 
 
 
 
-### Papers Read
+
+## Papers Read
 - Are All Layers Created Equal? (Zhang et. al.)
 - Complexity of Linear Regions in Deep Networks (Hanin et. al.)
 - Gradient Descent Quantizes ReLU Network Features (Maennel et. al.)
