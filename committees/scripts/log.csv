@@ -1,4 +1,0 @@
-[2024-01-31 12:52:04| INFO| MainProcess] model,beta,lr,weight_decay,seed,num_neurons,num_committees,size_committee,accuracy
-[2024-01-31 12:52:04| INFO| MainProcess] Training Committees
-[2024-01-31 12:52:53| INFO| MainProcess] Done
-[2024-01-31 12:52:53| INFO| MainProcess] process shutting down
